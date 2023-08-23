@@ -15,7 +15,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getHomeData = exports.getMediaInfo = exports.getMediaStream = exports.search = void 0;
 const youtubei_js_1 = require("youtubei.js");
 const http_exception_1 = __importDefault(require("../exceptions/http.exception"));
-const location = process.env.location;
+const location = "VN"; //process.env.location
+const lang = "vi";
 function search(keyword) {
     return __awaiter(this, void 0, void 0, function* () {
         try {

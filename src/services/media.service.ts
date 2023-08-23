@@ -1,7 +1,8 @@
 import { Innertube, UniversalCache, Utils } from 'youtubei.js';
 import HttpException from '../exceptions/http.exception';
 
-const location = process.env.location
+const location = "VN" //process.env.location
+const lang = "vi"
 
 export async function search(keyword: string) {
     try {
