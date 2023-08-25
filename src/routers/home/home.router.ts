@@ -1,6 +1,7 @@
 import { Router } from "express"
 import Routes from "../../types/routes";
 import HomeController from "./home.controller";
+import MediaMiddleware from "../../middlewares/media.middleware";
 
 export default class HomeRoute implements Routes {
     public path = '/'
@@ -12,6 +13,6 @@ export default class HomeRoute implements Routes {
     }
 
     private initializeRoutes() {
-        this.router.get(`${this.path}`, this.controller.getHomePageContent);
+        this.router.get(`${this.path}`, MediaMiddleware, this.controller.getHomePageContent);
     }
 }

@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const home_controller_1 = __importDefault(require("./home.controller"));
+const media_middleware_1 = __importDefault(require("../../middlewares/media.middleware"));
 class HomeRoute {
     constructor() {
         this.path = '/';
@@ -13,7 +14,7 @@ class HomeRoute {
         this.initializeRoutes();
     }
     initializeRoutes() {
-        this.router.get(`${this.path}`, this.controller.getHomePageContent);
+        this.router.get(`${this.path}`, media_middleware_1.default, this.controller.getHomePageContent);
     }
 }
 exports.default = HomeRoute;
