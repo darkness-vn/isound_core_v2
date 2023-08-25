@@ -12,37 +12,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AuthMiddleware = void 0;
-const jsonwebtoken_1 = require("jsonwebtoken");
+const firebase_app_1 = require("../firebase/firebase.app");
 const http_exception_1 = __importDefault(require("../exceptions/http.exception"));
-const getAuthorization = (req) => {
-    const coockie = req.cookies['Authorization'];
-    if (coockie)
-        return coockie;
-    const header = req.header('Authorization');
-    if (header)
-        return header.split('Bearer ')[1];
-    return null;
-};
 const AuthMiddleware = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const idToken = req.header("Authorization") || req.body.idToken;
+    if (!idToken) {
+        return next(new http_exception_1.default(404, 'accessToken and idToken must be provided'));
+    }
     try {
-        const Authorization = getAuthorization(req);
-        if (Authorization) {
-            const { _id } = (yield (0, jsonwebtoken_1.verify)(Authorization, "SECRET_KEY"));
-            // const user = await User.findById(_id);
-            // if (user) {
-            //   req.user = user;
-            //   next();
-            // } else {
-            //   next(new HttpException(401, 'Wrong authentication token'));
-            // }
-        }
-        else {
-            next(new http_exception_1.default(404, 'Authentication token missing'));
-        }
+        const userPayload = yield firebase_app_1.auth.verifyIdToken(idToken);
+        req.user = userPayload;
+        return next();
     }
     catch (error) {
-        next(new http_exception_1.default(401, 'Wrong authentication token'));
+        console.log(error);
+        return next(new http_exception_1.default(401, 'Can not authenticate'));
     }
 });
-exports.AuthMiddleware = AuthMiddleware;
+exports.default = AuthMiddleware;

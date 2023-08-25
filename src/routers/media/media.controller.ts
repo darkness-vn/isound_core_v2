@@ -22,7 +22,6 @@ export default class MediaController {
         try {
             const { mediaId } = req.params
 
-
             const stream = await getMediaStream(mediaId)
             res.setHeader('Content-Type', 'application/octet-stream')
             for await (const chunk of Utils.streamToIterable(stream)) {

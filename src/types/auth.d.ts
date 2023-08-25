@@ -1,4 +1,5 @@
 import type { Request } from "express"
+import type { DecodedIdToken } from "firebase-admin/lib/auth/token-verifier"
 
 export interface User {
     username: string,
@@ -15,5 +16,5 @@ export interface DataStoredInToken {
   }
 
 export interface RequestWithUser extends Request {
-    user: User;
+    user?: DecodedIdToken;
   }

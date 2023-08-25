@@ -1,36 +1,25 @@
-import { Response, NextFunction } from "express";
-import { DataStoredInToken, RequestWithUser } from "../types/auth";
-import { verify } from 'jsonwebtoken'
-import HttpException from "../exceptions/http.exception";
+import { auth } from "../firebase/firebase.app"
+import { Response, NextFunction } from "express"
+import HttpException from "../exceptions/http.exception"
+import { RequestWithUser } from "../types/auth"
 
-const getAuthorization = (req: RequestWithUser) => {
-  const coockie = req.cookies['Authorization'];
-  if (coockie) return coockie;
+const AuthMiddleware = async (req: RequestWithUser, res: Response, next: NextFunction) => {
 
-  const header = req.header('Authorization');
-  if (header) return header.split('Bearer ')[1];
+    const idToken = req.header("Authorization") || req.body.idToken
 
-  return null;
+    if (!idToken) {
+        return next(new HttpException(404, 'accessToken and idToken must be provided'))
+    }
+
+    try {
+        const userPayload = await auth.verifyIdToken(idToken as string)
+        req.user = userPayload
+        return next()
+    } catch(error) {
+        console.log(error)
+        return next(new HttpException(401, 'Can not authenticate'))
+    }
+
 }
 
-export const AuthMiddleware = async (req: RequestWithUser, res: Response, next: NextFunction) => {
-    try {
-      const Authorization = getAuthorization(req);
-  
-      if (Authorization) {
-        const { _id } = (await verify(Authorization, "SECRET_KEY")) as DataStoredInToken;
-        // const user = await User.findById(_id);
-  
-        // if (user) {
-        //   req.user = user;
-        //   next();
-        // } else {
-        //   next(new HttpException(401, 'Wrong authentication token'));
-        // }
-      } else {
-        next(new HttpException(404, 'Authentication token missing'));
-      }
-    } catch (error) {
-      next(new HttpException(401, 'Wrong authentication token'));
-    }
-  };
+export default AuthMiddleware

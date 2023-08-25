@@ -4,7 +4,7 @@ import "reflect-metadata"
 import cors from "cors"
 import dotenv from "dotenv"
 import bodyParser from "body-parser"
-import { HomeRoute, AuthRoute, MediaRoute } from "./routers"
+import { HomeRoute, AuthRoute, MediaRoute, UserRoute } from "./routers"
 
 dotenv.config()
 
@@ -16,6 +16,7 @@ function main () {
 		new HomeRoute(),
 		new AuthRoute(),
 		new MediaRoute(),
+		new UserRoute()
 	]
 
 	app.use(cors())

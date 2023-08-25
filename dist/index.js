@@ -18,6 +18,7 @@ function main() {
         new routers_1.HomeRoute(),
         new routers_1.AuthRoute(),
         new routers_1.MediaRoute(),
+        new routers_1.UserRoute()
     ];
     app.use((0, cors_1.default)());
     app.use(body_parser_1.default.urlencoded({ extended: false }));

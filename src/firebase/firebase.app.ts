@@ -7,10 +7,4 @@ export const app = firebase.initializeApp({
 })
 
 export const store = app.firestore()
-
-export async function example () {
-    const res = await store.collection("users").add({
-        email: "tungdz@gmail.com",
-        username: "nhucc"
-    })
-}
+export const auth = app.auth()
