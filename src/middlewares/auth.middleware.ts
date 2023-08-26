@@ -4,11 +4,13 @@ import HttpException from "../exceptions/http.exception"
 import { RequestWithUser } from "../types/auth"
 
 const AuthMiddleware = async (req: RequestWithUser, res: Response, next: NextFunction) => {
+    
+    console.log(`:: AuthMiddleware ::`)
 
     const idToken = req.header("Authorization") || req.body.idToken
 
     if (!idToken) {
-        return next(new HttpException(404, 'accessToken and idToken must be provided'))
+        return next(new HttpException(404, 'accessToken must be provided'))
     }
 
     try {

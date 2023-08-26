@@ -15,9 +15,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const firebase_app_1 = require("../firebase/firebase.app");
 const http_exception_1 = __importDefault(require("../exceptions/http.exception"));
 const AuthMiddleware = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(`:: AuthMiddleware ::`);
     const idToken = req.header("Authorization") || req.body.idToken;
     if (!idToken) {
-        return next(new http_exception_1.default(404, 'accessToken and idToken must be provided'));
+        return next(new http_exception_1.default(404, 'accessToken must be provided'));
     }
     try {
         const userPayload = yield firebase_app_1.auth.verifyIdToken(idToken);

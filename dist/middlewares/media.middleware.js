@@ -18,6 +18,7 @@ const firebase_app_1 = require("../firebase/firebase.app");
 const tokenTypes_1 = require("../constants/tokenTypes");
 function MediaMiddleware(req, res, next) {
     return __awaiter(this, void 0, void 0, function* () {
+        console.log(`:: MediaMiddleware ::`);
         const ENV = process.env.env;
         if (ENV == "dev")
             return next();

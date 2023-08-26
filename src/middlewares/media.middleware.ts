@@ -8,6 +8,7 @@ import dotenv from "dotenv"
 
 export default async function MediaMiddleware(req: Request, res: Response, next: NextFunction) {
     
+    console.log(`:: MediaMiddleware ::`)
     const ENV = process.env.env
     if (ENV == "dev") return next()
 
