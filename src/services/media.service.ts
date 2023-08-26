@@ -2,7 +2,7 @@ import { Innertube, UniversalCache, Utils } from 'youtubei.js';
 import HttpException from '../exceptions/http.exception';
 
 const location = "VN" //process.env.location
-const lang = "vi"
+const lang = "vi" //process.env.lang
 
 export async function search(keyword: string) {
     try {
@@ -16,7 +16,7 @@ export async function search(keyword: string) {
 }
 
 export async function getMediaStream(mediaId: string) {
-    const mediaService = await Innertube.create({ cache: new UniversalCache(false), generate_session_locally: true, location })
+    const mediaService = await Innertube.create({ cache: new UniversalCache(false), generate_session_locally: true })
     const info = await mediaService.music.getInfo(mediaId)
     const stream = await mediaService.download(info.basic_info.id as string, {
         type: 'audio',
@@ -28,7 +28,7 @@ export async function getMediaStream(mediaId: string) {
 
 export async function getMediaInfo(mediaId: string) {
     try {
-        const mediaService = await Innertube.create({ cache: new UniversalCache(false), generate_session_locally: true, location });
+        const mediaService = await Innertube.create({ cache: new UniversalCache(false), generate_session_locally: true, location, lang });
         const info = await mediaService.music.getInfo(mediaId)
         return info
     } catch(error) {
@@ -38,7 +38,7 @@ export async function getMediaInfo(mediaId: string) {
 
 export async function getHomeData() {
     try {
-        const mediaService = await Innertube.create({ cache: new UniversalCache(false), generate_session_locally: true, location });
+        const mediaService = await Innertube.create({ cache: new UniversalCache(false), generate_session_locally: true, location, lang });
         const home = await mediaService.music.getHomeFeed()
         return home.sections
     } catch (error) {
