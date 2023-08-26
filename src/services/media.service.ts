@@ -61,7 +61,7 @@ export async function getLyrics(mediaId: string) {
 
 async function mediaService() {
 
-    const core = await Innertube.create({ cache: new UniversalCache(true), generate_session_locally: true, location, lang })
+    const core = await Innertube.create({ cache: new UniversalCache(false), generate_session_locally: true, location, lang })
 
     const getMediaInfo = async (mediaId: string) => {
         try {

@@ -14,7 +14,7 @@ async function main () {
 	dotenv.config()
 	const app = express()
 	const server = http.createServer(app)
-	const mediaService = await Innertube.create({ cache: new UniversalCache(false), generate_session_locally: true, location, lang })
+	
 	const routes = [
 		new HomeRoute(),
 		new AuthRoute(),
