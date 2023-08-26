@@ -18,5 +18,7 @@ export default class MediaRoute implements Routes {
     private initializeRoutes() {
         this.router.get(`${this.path}/play/:mediaId`, MediaMiddleware, this.controller.play)
         this.router.get(`${this.path}/info/:mediaId`, MediaMiddleware, this.controller.getInfo)
+        this.router.get(`${this.path}/lyric/:mediaId`, MediaMiddleware, this.controller.getLyric)
+        this.router.get(`${this.path}/related/:mediaId`, MediaMiddleware, this.controller.getRelated)
     }
 }

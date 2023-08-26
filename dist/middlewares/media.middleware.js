@@ -18,9 +18,15 @@ const firebase_app_1 = require("../firebase/firebase.app");
 const tokenTypes_1 = require("../constants/tokenTypes");
 function MediaMiddleware(req, res, next) {
     return __awaiter(this, void 0, void 0, function* () {
+        const ENV = process.env.env;
+        if (ENV == "dev")
+            return next();
         try {
             const { token } = req.query;
             const decoded = jsonwebtoken_1.default.verify(token, "API_TOKEN_SECRET");
+            if (ENV === "dev") {
+                return next();
+            }
             if (decoded) {
                 const tokenDoc = yield firebase_app_1.store.collection("tokens").doc(decoded.tokenDocId);
                 const tokenData = (yield tokenDoc.get()).data();

@@ -16,6 +16,8 @@ class MediaRoute {
     initializeRoutes() {
         this.router.get(`${this.path}/play/:mediaId`, media_middleware_1.default, this.controller.play);
         this.router.get(`${this.path}/info/:mediaId`, media_middleware_1.default, this.controller.getInfo);
+        this.router.get(`${this.path}/lyric/:mediaId`, media_middleware_1.default, this.controller.getLyric);
+        this.router.get(`${this.path}/related/:mediaId`, media_middleware_1.default, this.controller.getRelated);
     }
 }
 exports.default = MediaRoute;

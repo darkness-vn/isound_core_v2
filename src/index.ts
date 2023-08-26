@@ -5,13 +5,16 @@ import cors from "cors"
 import dotenv from "dotenv"
 import bodyParser from "body-parser"
 import { HomeRoute, AuthRoute, MediaRoute, UserRoute } from "./routers"
+import { Innertube, UniversalCache, Utils } from 'youtubei.js';
 
-dotenv.config()
+const location = "VN" //process.env.location
+const lang = "vi" //process.env.lang
 
-function main () {
+async function main () {
+	dotenv.config()
 	const app = express()
 	const server = http.createServer(app)
-
+	const mediaService = await Innertube.create({ cache: new UniversalCache(false), generate_session_locally: true, location, lang })
 	const routes = [
 		new HomeRoute(),
 		new AuthRoute(),

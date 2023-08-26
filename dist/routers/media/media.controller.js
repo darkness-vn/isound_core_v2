@@ -21,11 +21,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const stream_1 = require("stream");
 const youtubei_js_1 = require("youtubei.js");
-const media_service_1 = require("../../services/media.service");
+const media_service_1 = __importDefault(require("../../services/media.service"));
 const reader = new stream_1.Readable();
-const http_exception_1 = __importDefault(require("../../exceptions/http.exception"));
 class MediaController {
-    // public service = Container.get(AuthService);
     download(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             res.statusCode = 200;
@@ -38,7 +36,7 @@ class MediaController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { mediaId } = req.params;
-                const stream = yield (0, media_service_1.getMediaStream)(mediaId);
+                const stream = yield (yield media_service_1.default).getMediaStream(mediaId);
                 res.setHeader('Content-Type', 'application/octet-stream');
                 try {
                     for (var _d = true, _e = __asyncValues(youtubei_js_1.Utils.streamToIterable(stream)), _f; _f = yield _e.next(), _a = _f.done, !_a; _d = true) {
@@ -57,8 +55,8 @@ class MediaController {
                 }
                 res.end();
             }
-            catch (err) {
-                throw new http_exception_1.default(500, "Loi roi ban oi");
+            catch (error) {
+                return res.status(404).json(error.message);
             }
         });
     }
@@ -66,11 +64,41 @@ class MediaController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { mediaId } = req.params;
-                const info = yield (0, media_service_1.getMediaInfo)(mediaId);
-                return res.status(200).json(info.basic_info);
+                const info = yield (yield media_service_1.default).getMediaInfo(mediaId);
+                return res.status(200).json(info);
             }
             catch (err) {
-                throw new http_exception_1.default(500, "Loi roi ban oi");
+                res.status(404).json(err.message);
+            }
+        });
+    }
+    getLyric(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { mediaId } = req.params;
+            try {
+                const lyric = yield (yield media_service_1.default).getLyrics(mediaId);
+                if (lyric) {
+                    return res.status(200).json(lyric);
+                }
+                else {
+                    return res.status(404).json("Ko co loi");
+                }
+            }
+            catch (error) {
+                // @ts-ignore
+                return res.status(404).json(error.message);
+            }
+        });
+    }
+    getRelated(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { mediaId } = req.params;
+                const data = yield (yield media_service_1.default).getRelated(mediaId);
+                return res.status(200).json(data);
+            }
+            catch (error) {
+                return res.status(404);
             }
         });
     }
