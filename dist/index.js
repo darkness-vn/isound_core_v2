@@ -19,7 +19,6 @@ const cors_1 = __importDefault(require("cors"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const body_parser_1 = __importDefault(require("body-parser"));
 const routers_1 = require("./routers");
-const youtubei_js_1 = require("youtubei.js");
 const location = "VN"; //process.env.location
 const lang = "vi"; //process.env.lang
 function main() {
@@ -27,12 +26,12 @@ function main() {
         dotenv_1.default.config();
         const app = (0, express_1.default)();
         const server = http_1.default.createServer(app);
-        const mediaService = yield youtubei_js_1.Innertube.create({ cache: new youtubei_js_1.UniversalCache(false), generate_session_locally: true, location, lang });
         const routes = [
             new routers_1.HomeRoute(),
             new routers_1.AuthRoute(),
             new routers_1.MediaRoute(),
-            new routers_1.UserRoute()
+            new routers_1.UserRoute(),
+            new routers_1.TokenRoute()
         ];
         app.use((0, cors_1.default)());
         app.use(body_parser_1.default.urlencoded({ extended: false }));

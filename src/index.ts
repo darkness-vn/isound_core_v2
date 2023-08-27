@@ -4,7 +4,7 @@ import "reflect-metadata"
 import cors from "cors"
 import dotenv from "dotenv"
 import bodyParser from "body-parser"
-import { HomeRoute, AuthRoute, MediaRoute, UserRoute } from "./routers"
+import { HomeRoute, AuthRoute, MediaRoute, UserRoute, TokenRoute } from "./routers"
 import { Innertube, UniversalCache, Utils } from 'youtubei.js';
 
 const location = "VN" //process.env.location
@@ -19,7 +19,8 @@ async function main () {
 		new HomeRoute(),
 		new AuthRoute(),
 		new MediaRoute(),
-		new UserRoute()
+		new UserRoute(),
+		new TokenRoute()
 	]
 
 	app.use(cors())

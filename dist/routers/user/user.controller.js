@@ -13,22 +13,32 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const firebase_app_1 = require("../../firebase/firebase.app");
-const uuid_1 = require("uuid");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const tokenTypes_1 = require("../../constants/tokenTypes");
 class UserController {
     constructor() {
         this.updateInfo = (req, res) => {
-            console.log(req.user);
             return res.status(200).json(req.user);
         };
         this.createAPIToken = (req, res) => __awaiter(this, void 0, void 0, function* () {
             var _a;
-            const { tokenName } = req.body;
-            const key = (0, uuid_1.v4)();
+            const { tokenName, options } = req.body;
+            console.log(options);
             let currentDate = new Date();
             currentDate.setFullYear(currentDate.getFullYear() + 2);
+            const tokenOptionsInstance = {
+                location: "VN",
+                lang: "vi",
+                feed: false,
+                audio: false,
+                video: false,
+                download: false,
+                lyric: false,
+                history: false,
+                playlist: false
+            };
             const tokenDoc = yield firebase_app_1.store.collection("tokens").add({
+                options: Object.assign(Object.assign({}, tokenOptionsInstance), options),
                 uid: (_a = req.user) === null || _a === void 0 ? void 0 : _a.uid,
                 token_limit: 10000,
                 token_name: tokenName,
@@ -56,7 +66,6 @@ class UserController {
             try {
                 const snapshot = yield firebase_app_1.store.collection("tokens").doc(token).get();
                 const data = snapshot.data();
-                console.log(data);
                 return res.status(200).json(data);
             }
             catch (err) {
@@ -64,13 +73,11 @@ class UserController {
         });
         this.deleteToken = (req, res) => __awaiter(this, void 0, void 0, function* () {
             const { token } = req.params;
-            console.log(token);
             try {
                 yield firebase_app_1.store.collection("tokens").doc(token).delete();
                 return res.status(201).json("OK");
             }
             catch (error) {
-                console.log(error);
                 return res.status(500);
             }
         });

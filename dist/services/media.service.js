@@ -85,7 +85,7 @@ function getLyrics(mediaId) {
 exports.getLyrics = getLyrics;
 function mediaService() {
     return __awaiter(this, void 0, void 0, function* () {
-        const core = yield youtubei_js_1.Innertube.create({ cache: new youtubei_js_1.UniversalCache(true), generate_session_locally: true, location, lang });
+        const core = yield youtubei_js_1.Innertube.create({ cache: new youtubei_js_1.UniversalCache(false), generate_session_locally: true, location, lang });
         const getMediaInfo = (mediaId) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const info = yield core.music.getInfo(mediaId);
